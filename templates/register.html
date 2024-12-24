@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Регистрация</title>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     {% with messages = get_flashed_messages() %}
@@ -15,14 +16,15 @@
               </ul>
         {% endif %}
     {% endwith %}
-    <form style="padding: 10px; display: flex; flex-direction: column; align-items: center;" action="/registration" method="post">
+    <div style="padding: 10px; display: flex; flex-direction: column; align-items: center;">
         <label class="label-text" for="username">Имя пользователя:</label>
         <input class="input" type="text" id="username" name="username">
         <label class="label-text" for="password">Пароль:</label>
         <input class="input" type="password" id="password" name="password">
         <label class="label-text">Код администратора - ТОЛЬКО ДЛЯ АДМИНИСТРАТОРОВ</label>
         <input class="input" type="text" id="admin-code" name="admin-code">
-        <input type="submit" value="Зарегистрироваться">
-    </form>
+        <input class="get-values" type="submit" value="Зарегистрироваться">
+    </div>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
 </body>
 </html>
