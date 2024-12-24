@@ -1,0 +1,10 @@
+.label-text {
+    font-size: 20px;
+}
+
+.input {
+    padding: 10px;
+    border-color: purple;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

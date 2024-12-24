@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+              <ul class="ul_cl">
+              {% for message in messages %}
+                <li style="color: green;">{{ message }}</li>
+              {% endfor %}
+              </ul>
+        {% endif %}
+    {% endwith %}
+    <form style="padding: 10px; display: flex; flex-direction: column; align-items: center;" action="/registration" method="post">
+        <label class="label-text" for="username">Имя пользователя:</label>
+        <input class="input" type="text" id="username" name="username">
+        <label class="label-text" for="password">Пароль:</label>
+        <input class="input" type="password" id="password" name="password">
+        <label class="label-text">Код администратора - ТОЛЬКО ДЛЯ АДМИНИСТРАТОРОВ</label>
+        <input class="input" type="text" id="admin-code" name="admin-code">
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+</body>
+</html>
