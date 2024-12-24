@@ -1,7 +1,6 @@
 document.querySelector('.get-values').onclick = Get_info;
 
 function Get_info() {
-    console.log('try')
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
     var admin = document.getElementById('admin-code').value;

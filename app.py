@@ -11,14 +11,12 @@ def home():
 
 @app.route('/registration', methods=['GET'])
 def open_registration():
-    print(8)
     return render_template('register.html')
 
 
 @app.route('/registration', methods=['POST'])
 def regisration():
     data = request.get_json()
-    print(data)
     user = data['username']
     password = data['password']
     code = data['admin']
@@ -29,7 +27,7 @@ def regisration():
     # Проверить на наличие почты в БД - надо функцию
 
     print(user, password)
-    if code:
+    if code == 'GymBoy':
         # admin
         pass
     else:
