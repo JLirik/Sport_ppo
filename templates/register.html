@@ -7,24 +7,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-              <ul class="ul_cl">
-              {% for message in messages %}
-                <li style="color: green;">{{ message }}</li>
-              {% endfor %}
-              </ul>
-        {% endif %}
-    {% endwith %}
     <div style="padding: 10px; display: flex; flex-direction: column; align-items: center;">
         <label class="label-text" for="username">Имя пользователя:</label>
-        <input class="input" type="text" id="username" name="username">
+        <input required class="input" type="text" id="username" name="username">
+        <label class="error" id="output"></label>
         <label class="label-text" for="password">Пароль:</label>
-        <input class="input" type="password" id="password" name="password">
+        <input required class="input" type="password" id="password" name="password">
         <label class="label-text">Код администратора - ТОЛЬКО ДЛЯ АДМИНИСТРАТОРОВ</label>
         <input class="input" type="text" id="admin-code" name="admin-code">
         <input class="get-values" type="submit" value="Зарегистрироваться">
     </div>
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="{{url_for('static', filename='/scripts/registration.js')}}"></script>
 </body>
 </html>
