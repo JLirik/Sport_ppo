@@ -14,14 +14,14 @@ with app.app_context():
     db.create_all()
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
-    pass
+    return render_template('startpage.html')
 
 
 @app.route('/registration', methods=['GET'])
 def open_registration():
-    return render_template('register.html')
+    return render_template('registration.html')
 
 
 @app.route('/Auth/reg_check', methods=['POST'])

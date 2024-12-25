@@ -22,19 +22,20 @@ function Get_info() {
     let username = document.getElementById('username').value;
     let password = encryptPassword(document.getElementById('password').value);
     let admin = document.getElementById('admin-code').value;
-    console.log(username, password, admin)
-    $.ajax({
-        url: '/Auth/reg_check',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ 'username': username, 'password': password, 'admin': admin }),
-        success: function(response) {
-            console.log('GOOD!')
-            console.log(response)
-            document.getElementById('output').innerHTML = response;
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
+    if (username && password) {
+        $.ajax({
+            url: '/Auth/reg_check',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 'username': username, 'password': password, 'admin': admin }),
+            success: function(response) {
+                console.log('GOOD!');
+                console.log(response);
+                document.getElementById('output').innerHTML = response;
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 }
