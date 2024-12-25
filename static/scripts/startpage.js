@@ -1,5 +1,10 @@
-document.querySelector('.to-the-reg').onclick = Registration;
+const [toTheReg] = document.getElementsByClassName('to-the-reg');
+const [toTheLogin] = document.getElementsByClassName('to-the-login');
 
-function Registration() {
+toTheReg.addEventListener('click', async function() {
     window.location.href = '/registration';
-}
+})
+
+toTheLogin.addEventListener('click', async function() {
+    window.location.href = '/login';
+})

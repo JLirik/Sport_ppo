@@ -1,26 +1,9 @@
-document.querySelector('.get-values').onclick = Get_info;
+const [submitButton] = document.getElementsByClassName('get-values');
 
-function encryptPassword(password) {
-    let encryptedPassword = "";
-    let alphabet = "abcdefghijklmnopqrstuvwxyz";
-    for (let i = 0; i < password.length; i++) {
-        encryptedPassword += alphabet[i % alphabet.length] + "2" + password[i];
-    }
-    return encryptedPassword.split("").reverse().join("");
-}
 
-function decryptPassword(encryptedPassword) {
-    let decryptedPassword = "";
-    let reversedEncryptedPassword = encryptedPassword.split("").reverse().join("");
-    for (let i = 0; i < reversedEncryptedPassword.length; i += 3) {
-        decryptedPassword += reversedEncryptedPassword[i + 2];
-    }
-    return decryptedPassword;
-}
-
-function Get_info() {
+submitButton.addEventListener('click', async function() {
     let username = document.getElementById('username').value;
-    let password = encryptPassword(document.getElementById('password').value);
+    let password = document.getElementById('password').value;
     let admin = document.getElementById('admin-code').value;
     if (username && password) {
         $.ajax({
@@ -29,13 +12,23 @@ function Get_info() {
             contentType: 'application/json',
             data: JSON.stringify({ 'username': username, 'password': password, 'admin': admin }),
             success: function(response) {
-                console.log('GOOD!');
-                console.log(response);
-                document.getElementById('output').innerHTML = response;
+                if (response === 'This user already exists') {
+                    document.getElementById('output').innerHTML = 'Это имя пользователя уже занято';
+                }
+                else if (response === 'Successfully registered;0') {
+                    window.location.href = '/user/main';
+                }
+                else if (response === 'Successfully registered;1') {
+                    window.location.href = '/admin/main';
+                }
+                else {
+                    document.getElementById('output').innerHTML = 'Возникла неизвестная ошибка';
+                }
+
             },
             error: function(error) {
-                console.log(error);
+                document.getElementById('output').innerHTML = 'Возникла ошибка:' + error;
             }
         });
     }
-}
+});
