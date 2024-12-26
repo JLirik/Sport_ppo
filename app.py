@@ -31,6 +31,8 @@ def home():
 
 @app.route('/registration', methods=['GET'])
 def open_registration():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_main')) if current_user.is_admin else redirect(url_for('user_main'))
     return render_template('registration.html')
 
 
@@ -41,6 +43,8 @@ def registration():
     password = data['password']
     is_admin = int(data['admin'] == 'BigKoribskyTits')
 
+    print(data)
+
     if User.query.filter_by(name=user).first():
         return make_response('This user already exists')
 
@@ -50,11 +54,16 @@ def registration():
     db.session.add(to_db_user)
     db.session.commit()
 
+    print(to_db_user)
+
+    login_user(user)
     return make_response(f'Successfully registered;{is_admin}')
 
 
 @app.route('/login', methods=['GET'])
 def open_login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_main')) if current_user.is_admin else redirect(url_for('user_main'))
     return render_template('login.html')
 
 
@@ -91,6 +100,14 @@ def admin_main():
     else:
         return redirect(url_for('home'))
     return render_template('admin_main.html')
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        return redirect(url_for('open_login'))
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

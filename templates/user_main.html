@@ -13,6 +13,8 @@
 
 <body>
 {% if current_user.is_authenticated %}
-    <h5>{{ current_user.name }}</h5>
+    <h5>USER</h5>
+    <h5>имя - {{ current_user.name }}</h5>
+    <a href="/logout">Выйти</a>
 {% endif %}
 </body>
