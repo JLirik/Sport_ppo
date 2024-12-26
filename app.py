@@ -89,7 +89,8 @@ def user_main():
     else:
         return redirect(url_for('home'))
     requested_inventory_id = [take.id for take in Take.query.filter_by(user_id=current_user.id).all()]
-    inventory = [[item.id, item.name, item.quantity, item.quality] for item in Inventory.query.filter(Inventory.id.in_(requested_inventory_id)).all()]
+    inventory = [[item.id, item.name, item.quantity, item.quality]
+                 for item in Inventory.query.filter(Inventory.id.in_(requested_inventory_id)).all()]
     return render_template('user_main.html', inventory=inventory)
 
 
@@ -109,6 +110,25 @@ def logout():
         logout_user()
         return redirect(url_for('open_login'))
     return redirect(url_for('home'))
+
+
+@app.route('/user/make_request', methods=['GET'])
+def request_new_item():
+    if current_user.is_authenticated:
+        inventory = [[item.id, item.name, item.last_quantity, item.quality] for item in
+                     Inventory.query.all()]
+        return render_template('request_new_item.html', inventory=inventory)
+    else:
+        return redirect(url_for('home'))
+
+
+@app.route('/user/change_item', methods=['post'])
+def change_item():
+    ids = list(request.form)[0][0]
+    if current_user.is_authenticated:
+        return render_template('change_item.html', ids=ids)
+    else:
+        return redirect(url_for('home'))
 
 
 def create_base_db():

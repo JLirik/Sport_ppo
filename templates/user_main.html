@@ -13,8 +13,29 @@
 
 <body>
 {% if current_user.is_authenticated %}
-    <h5>USER</h5>
-    <h5>имя - {{ current_user.name }}</h5>
-    <a href="/logout">Выйти</a>
+    <div style="display: flex; justify-content: space-between">
+        <h5>USER</h5>
+        <h3>имя - {{ current_user.name }}</h3>
+        <a href="/logout">Выйти</a>
+    </div>
+    <form action="/user/make_request" method="get">
+        <button class="make-request">Создать заявку на получение инвентаря</button>
+    </form>
+    <div style="display: flex; justify-content: center;">
+
+        <div style="border: 2px solid black; text-align: center; width: 60%;">
+            {% for item in inventory %}
+                <form action="/user/change_item" method="post" style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
+                    <h2>{{ item[1] }}</h2>
+                    <h3>Колличество: {{ item[2] }}</h3>
+                    <h3>Состояние: {{ item[3] }}</h3>
+                    <button name="{{ item[0] }}" class="change-item">Заменить предмет</button>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+
+{% else %}
+    <h1>Бро, тебе нужно авторизоваться</h1>
 {% endif %}
 </body>
