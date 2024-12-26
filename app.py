@@ -43,8 +43,6 @@ def registration():
     password = data['password']
     is_admin = int(data['admin'] == 'BigKoribskyTits')
 
-    print(data)
-
     if User.query.filter_by(name=user).first():
         return make_response('This user already exists')
 
@@ -54,9 +52,7 @@ def registration():
     db.session.add(to_db_user)
     db.session.commit()
 
-    print(to_db_user)
-
-    login_user(user)
+    login_user(to_db_user)
     return make_response(f'Successfully registered;{is_admin}')
 
 
@@ -72,7 +68,6 @@ def login():
     data = request.get_json()
     user = data['username']
     password = data['password']
-    print('login', data)
 
     user = User.query.filter_by(name=user).first()
     if user and user.password == password:
