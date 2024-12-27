@@ -116,7 +116,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/user/make_request', methods=['GET'])
+@app.route('/user/request_new_item', methods=['GET'])
 def request_new_item():
     if current_user.is_authenticated:
         inventory = [[item.id, item.name, item.last_quantity, item.quality] for item in
@@ -124,6 +124,23 @@ def request_new_item():
         return render_template('request_new_item.html', inventory=inventory)
     else:
         return redirect(url_for('home'))
+
+
+@app.route('/admin/check_requests', methods=['GET'])
+def check_requests():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+    print(1)
+    taken_item = Request.query.filter(Request.is_change == 1, Request.status == 'на рассмотрении').all()
+    user_requests = []
+    for ask in taken_item:
+        user_requests.append((ask.id, User.query.filter(User.id==ask.user_id).first().name,
+                              Inventory.query.filter(Inventory.id==ask.inventory_id).first().name,
+                              Inventory.query.filter(Inventory.id==ask.inventory_id).first().quantity, ask.quality))
+    return render_template('check_requests.html', user_requests=user_requests)
 
 
 @app.route('/user/change_item', methods=['post'])
