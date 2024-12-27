@@ -88,10 +88,13 @@ def user_main():
             return redirect(url_for('admin_main'))
     else:
         return redirect(url_for('home'))
-    requested_inventory_id = [take.id for take in Take.query.filter_by(user_id=current_user.id).all()]
-    inventory = [[item.id, item.name, item.quantity, item.quality]
-                 for item in Inventory.query.filter(Inventory.id.in_(requested_inventory_id)).all()]
-    return render_template('user_main.html', inventory=inventory)
+
+    taken_item = Take.query.filter_by(user_id=current_user.id).all()
+    user_inventory = []
+    for item in taken_item:
+        product = Inventory.query.filter_by(id=item.id).first()
+        user_inventory.append((product.id, product.name, item.quantity, product.quality))
+    return render_template('user_main.html', inventory=user_inventory)
 
 
 @app.route('/admin/main', methods=['GET'])
@@ -101,6 +104,7 @@ def admin_main():
             return redirect(url_for('user_main'))
     else:
         return redirect(url_for('home'))
+
     return render_template('admin_main.html')
 
 

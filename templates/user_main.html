@@ -22,7 +22,6 @@
         <button class="make-request">Создать заявку на получение инвентаря</button>
     </form>
     <div style="display: flex; justify-content: center;">
-
         <div style="border: 2px solid black; text-align: center; width: 60%;">
             {% for item in inventory %}
                 <form action="/user/change_item" method="post" style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
