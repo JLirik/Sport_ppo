@@ -134,12 +134,12 @@ def check_requests():
     else:
         return redirect(url_for('home'))
     print(1)
-    taken_item = Request.query.filter(Request.is_change == 1, Request.status == 'на рассмотрении').all()
+    taken_item = FixRequest.query.filter(FixRequest.status == 'на рассмотрении').all()
     user_requests = []
     for ask in taken_item:
-        user_requests.append((ask.id, User.query.filter(User.id==ask.user_id).first().name,
-                              Inventory.query.filter(Inventory.id==ask.inventory_id).first().name,
-                              Inventory.query.filter(Inventory.id==ask.inventory_id).first().quantity, ask.quality))
+        user_requests.append((ask.id, User.query.filter(User.id == ask.user_id).first().name,
+                              Inventory.query.filter(Inventory.id == ask.inventory_id).first().name,
+                              Inventory.query.filter(Inventory.id == ask.inventory_id).first().quantity, ask.quality))
     return render_template('check_requests.html', user_requests=user_requests)
 
 

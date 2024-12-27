@@ -13,14 +13,31 @@ class Inventory(db.Model):
     quality = db.Column(db.String(100), nullable=False)
 
 
-class Request(db.Model):
-    __tablename__ = 'requests'
+class FixRequest(db.Model):
+    __tablename__ = 'fix_requests'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     inventory_id = db.Column(db.Integer, db.ForeignKey('inventory.id'), nullable=False)
     quality = db.Column(db.String(50), nullable=False)
-    is_change = db.Column(db.Boolean, nullable=False)
     status = db.Column(db.String(50), nullable=False)
+
+
+class NewRequest(db.Model):
+    __tablename__ = 'new_requests'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    inventory_id = db.Column(db.Integer, db.ForeignKey('inventory.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(50), nullable=False)
+
+
+# class AdminRequest(db.Model):  V RAZRABOTKE
+#     __tablename__ = 'admin_requests'
+    # id = db.Column(db.Integer, primary_key=True)
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # inventory_id = db.Column(db.Integer, db.ForeignKey('inventory.id'), nullable=False)
+    # quality = db.Column(db.String(50), nullable=False)
+    # status = db.Column(db.String(50), nullable=False)
 
 
 class Take(db.Model):
