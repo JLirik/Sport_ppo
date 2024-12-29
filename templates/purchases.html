@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>reg</title>
+    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="static/assets/css/Login-Form-Basic-icons.css">
+</head>
+<body>
+{% if current_user.is_authenticated %}
+    <div style="display: flex; justify-content: space-between">
+        <h5>ADMIN</h5>
+        <h5>имя - {{ current_user.name }}</h5>
+        <a href="/logout">Выйти</a>
+    </div>
+    <form action="/admin/add_purchase" method="get">
+        <button class="add_purchase">Добавить в план</button>
+    </form>
+    <div style="display: flex; justify-content: center;">
+        <div style="border: 2px solid black; text-align: center; width: 60%;">
+            {% for req in requests %}
+                <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
+                    <h2>Название : {{ req[1] }}</h2>
+                    <h3>Цена : {{ req[2] }}</h3>
+                    <h3>Количество: {{ req[3] }}</h3>
+                    <h3>Поставщик: {{ req[4] }}</h3>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+</body>
+</html>

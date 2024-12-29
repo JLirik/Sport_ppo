@@ -108,8 +108,11 @@ def admin_main():
             return redirect(url_for('user_main'))
     else:
         return redirect(url_for('home'))
-
-    return render_template('admin_main.html')
+    taken_item = Inventory.query.all()
+    all_inventory = []
+    for item in taken_item:
+        all_inventory.append((item.id, item.name, item.quantity, item.last_quantity, item.quality))
+    return render_template('admin_main.html', inventory=all_inventory)
 
 
 @app.route('/logout', methods=['GET'])
@@ -137,7 +140,6 @@ def check_requests():
             return redirect(url_for('user_main'))
     else:
         return redirect(url_for('home'))
-    print(1)
     taken_item = FixRequest.query.filter(FixRequest.status == 'на рассмотрении').all()
     user_requests = []
     for ask in taken_item:
@@ -145,6 +147,22 @@ def check_requests():
                               Inventory.query.filter(Inventory.id == ask.inventory_id).first().name,
                               Inventory.query.filter(Inventory.id == ask.inventory_id).first().quantity, ask.quality))
     return render_template('check_requests.html', user_requests=user_requests)
+
+
+@app.route('/admin/purchases', methods=['GET'])
+def purchases():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+
+    taken_item = AdminRequest.query.all()
+    admin_requests = []
+    for item in taken_item:
+        admin_requests.append((item.id, item.name, item.price, item.quantity, item.provider_name))
+    return render_template('purchases.html', requests=admin_requests)
+
 
 
 @app.route('/User/fix_item', methods=['POST'])

@@ -18,25 +18,26 @@
         <h5>имя - {{ current_user.name }}</h5>
         <a href="/logout">Выйти</a>
     </div>
+    <div style="display: flex; justify-content: space-between">
     <form action="/admin/check_requests" method="get">
         <button class="check-requests">Посмотреть заявки</button>
     </form>
-<!--    <div style="display: flex; justify-content: center;">-->
-<!--        <div style="border: 2px solid black; text-align: center; width: 80%;">-->
-<!--            {% for req in user_requests %}-->
-<!--                <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">-->
-<!--                    <h2>Имя пользователя {{ item[1] }}</h2>-->
-<!--                    <h3>Название : {{ item[2] }}</h3>-->
-<!--                    <h3>Количество: {{ item[3] }}</h3>-->
-<!--                    <h3>Качество: {{ item[4] }}</h3>-->
-<!--                    <div>-->
-<!--                        <button>Принять</button>-->
-<!--                        <button>Отклонить</button>-->
-<!--                    </div>-->
+    <form action="/admin/purchases" method="get">
+        <button class="purchases">Закупить инвентарь</button>
+    </form>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <div style="border: 2px solid black; text-align: center; width: 60%;">
+            {% for item in inventory %}
+                <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
+                    <h2>Название : {{ item[1] }}</h2>
+                    <h3>Всего : {{ item[2] }}</h3>
+                    <h3>Свободно: {{ item[3] }}</h3>
+                    <h3>Качество: {{ item[4] }}</h3>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-<!--                </div>-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-<!--    </div>-->
 {% endif %}
 </body>
