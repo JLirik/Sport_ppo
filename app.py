@@ -140,7 +140,7 @@ def check_requests():
             return redirect(url_for('user_main'))
     else:
         return redirect(url_for('home'))
-    taken_item = FixRequest.query.filter(FixRequest.status == 'на рассмотрении').all()
+    taken_item = FixRequest.query.filter(FixRequest.status == 'На рассмотрении').all()
     user_requests = []
     for ask in taken_item:
         user_requests.append((ask.id, User.query.filter(User.id == ask.user_id).first().name,
@@ -164,16 +164,15 @@ def purchases():
     return render_template('purchases.html', requests=admin_requests)
 
 
-
 @app.route('/User/fix_item', methods=['POST'])
 def fix_item():
     item_id = request.get_json()['item_id']
-    item = Inventory.query.filter(Inventory.id==item_id).first()
+    item = Inventory.query.filter(Inventory.id == item_id).first()
     req = FixRequest()
     req.user_id = current_user.id
     req.inventory_id = item_id
     req.quality = item.quality
-    req.status = 'Отправлено'
+    req.status = 'На рассмотрении'
     db.session.add(req)
     db.session.commit()
     return make_response('The Best!')
