@@ -93,7 +93,11 @@ def user_main():
     user_inventory = []
     for item in taken_item:
         product = Inventory.query.filter_by(id=item.id).first()
-        user_inventory.append((product.id, product.name, item.quantity, product.quality))
+        fixes = FixRequest.query.filter_by(user_id=current_user.id, inventory_id=item.id).first()
+        status = False
+        if fixes:
+            status = fixes.status
+        user_inventory.append((product.id, product.name, item.quantity, product.quality, status))
     return render_template('user_main.html', inventory=user_inventory)
 
 
@@ -143,13 +147,18 @@ def check_requests():
     return render_template('check_requests.html', user_requests=user_requests)
 
 
-@app.route('/user/change_item', methods=['post'])
-def change_item():
-    ids = list(request.form)[0][0]
-    if current_user.is_authenticated:
-        return render_template('change_item.html', ids=ids)
-    else:
-        return redirect(url_for('home'))
+@app.route('/User/fix_item', methods=['POST'])
+def fix_item():
+    item_id = request.get_json()['item_id']
+    item = Inventory.query.filter(Inventory.id==item_id).first()
+    req = FixRequest()
+    req.user_id = current_user.id
+    req.inventory_id = item_id
+    req.quality = item.quality
+    req.status = 'Отправлено'
+    db.session.add(req)
+    db.session.commit()
+    return make_response('The Best!')
 
 
 def create_base_db():

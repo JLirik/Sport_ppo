@@ -22,18 +22,23 @@
         <button class="request_new_item">Создать заявку на получение инвентаря</button>
     </form>
     <div style="display: flex; justify-content: center;">
-        <div style="border: 2px solid black; text-align: center; width: 60%;">
+        <div id="item-table" style="border: 2px solid black; text-align: center; width: 60%;">
             {% for item in inventory %}
-                <form action="/user/change_item" method="post" style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
+                <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
                     <h2>{{ item[1] }}</h2>
                     <h3>Колличество: {{ item[2] }}</h3>
                     <h3>Состояние: {{ item[3] }}</h3>
-                    <button name="{{ item[0] }}" class="change-item">Заменить предмет</button>
-                </form>
+                    {% if item[4] %}
+                        <h4>Статус заявки: {{item[4]}}</h4>
+                    {% else %}
+                        <button id="{{ item[0] }}" class="fix-item">Заменить предмет</button>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
     </div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/user_main.js')}}"></script>
 {% else %}
     <h1>Бро, тебе нужно авторизоваться</h1>
 {% endif %}
