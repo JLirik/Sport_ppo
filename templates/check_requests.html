@@ -10,9 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="static/assets/css/Login-Form-Basic-icons.css">
 </head>
-
 <body>
-{% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated %}
     <div style="display: flex; justify-content: space-between">
         <h5>ADMIN</h5>
         <h5>имя - {{ current_user.name }}</h5>
@@ -30,13 +29,14 @@
                     <h3>Количество: {{ req[3] }}</h3>
                     <h3>Качество: {{ req[4] }}</h3>
                     <div style="display: flex; flex-direction: column;">
-                        <button>Принять</button>
-                        <button>Отклонить</button>
+                        <button class="accept-btn" data-id="{{ req[0] }}">Принять</button>
+                        <button class="reject-btn" data-id="{{ req[0] }}">Отклонить</button>
                     </div>
-
                 </div>
             {% endfor %}
         </div>
     </div>
-{% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/admin_check_requests.js')}}"></script>
+    {% endif %}
 </body>
