@@ -149,6 +149,26 @@ def check_requests():
     return render_template('check_requests.html', user_requests=user_requests)
 
 
+@app.route('/admin/update_request_status', methods=['POST'])
+def update_request_status():
+    data = request.get_json()
+    request_id = data.get('id')
+    action = data.get('action')
+    request_record = FixRequest.query.filter_by(id=request_id).first()
+    if not request_record:
+        return jsonify(success=False, message="Запрос не найден"), 404
+
+    if action == 'accept':
+        request_record.status = 'Принята'
+        inventory = Inventory.query.filter_by(id=request_record.inventory_id).first()
+        if inventory:
+            inventory.quality = 'Новый'
+    elif action == 'reject':
+        request_record.status = 'Отклонена'
+    db.session.commit()
+    return jsonify(success=True)
+
+
 @app.route('/admin/purchases', methods=['GET'])
 def purchases():
     if current_user.is_authenticated:
@@ -191,20 +211,20 @@ def create_base_db():
                       password='LoveAlice',
                       is_admin=1)
     db.session.add(to_db_user)
-    to_db_inventory = Inventory(name='Сиськи Корибски малые',
+    to_db_inventory = Inventory(name='мяч1',
                                 quantity=50,
                                 last_quantity=30,
-                                quality='новые')
+                                quality='Сломанный')
     db.session.add(to_db_inventory)
-    to_db_inventory = Inventory(name='Сиськи Корибски большие',
+    to_db_inventory = Inventory(name='мяч2',
                                 quantity=10,
                                 last_quantity=8,
-                                quality='новые')
+                                quality='Новый')
     db.session.add(to_db_inventory)
-    to_db_inventory = Inventory(name='Сиськи Вольвача универсальные',
+    to_db_inventory = Inventory(name='мяч3',
                                 quantity=50,
                                 last_quantity=40,
-                                quality='новые')
+                                quality='Новый')
     db.session.add(to_db_inventory)
     to_db_take = Take(user_id=1,
                       inventory_id=1,
