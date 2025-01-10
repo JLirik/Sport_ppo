@@ -133,6 +133,26 @@ def request_new_item():
         return redirect(url_for('home'))
 
 
+@app.route('/user/send_new_item', methods=['POST'])
+def send_new_item():
+    # V Razrabotke
+    data = request.get_json()
+    user_id = current_user.id
+    item_id = data['item_id']
+    quantity = data['quantity']
+    quality = data['quality']
+
+    # new_take = Take(user_id=user_id, inventory_id=item_id, quantity=quantity)
+    # db.session.add(new_take)
+    # db.session.commit()
+    #
+    # new_fix = FixRequest(user_id=user_id, inventory_id=item_id, quality=quality, status='На рассмотрении')
+    # db.session.add(new_fix)
+    # db.session.commit()
+
+    return make_response('Запрос на выдачу принят')
+
+
 @app.route('/admin/check_requests', methods=['GET'])
 def check_requests():
     if current_user.is_authenticated:
