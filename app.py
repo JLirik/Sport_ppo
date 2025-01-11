@@ -133,24 +133,37 @@ def request_new_item():
         return redirect(url_for('home'))
 
 
-@app.route('/user/send_new_item', methods=['POST'])
+@app.route('/User/send_new_item', methods=['POST'])
 def send_new_item():
-    # V Razrabotke
     data = request.get_json()
+    print(1)
     user_id = current_user.id
     item_id = data['item_id']
     quantity = data['quantity']
-    quality = data['quality']
 
-    # new_take = Take(user_id=user_id, inventory_id=item_id, quantity=quantity)
-    # db.session.add(new_take)
-    # db.session.commit()
-    #
-    # new_fix = FixRequest(user_id=user_id, inventory_id=item_id, quality=quality, status='На рассмотрении')
-    # db.session.add(new_fix)
-    # db.session.commit()
+    ask_item = NewRequest()
+    ask_item.user_id = user_id
+    ask_item.inventory_id = item_id
+    ask_item.quantity = quantity
+    ask_item.status = 'Отправлено'
+    db.session.add(ask_item)
+    db.session.commit()
 
     return make_response('Запрос на выдачу принят')
+
+
+@app.route('/User/fix_item', methods=['POST'])
+def fix_item():
+    item_id = request.get_json()['item_id']
+    item = Inventory.query.filter(Inventory.id == item_id).first()
+    req = FixRequest()
+    req.user_id = current_user.id
+    req.inventory_id = item_id
+    req.quality = item.quality
+    req.status = 'На рассмотрении'
+    db.session.add(req)
+    db.session.commit()
+    return make_response('The Best!')
 
 
 @app.route('/admin/check_requests', methods=['GET'])
@@ -202,20 +215,6 @@ def purchases():
     for item in taken_item:
         admin_requests.append((item.id, item.name, item.price, item.quantity, item.provider_name))
     return render_template('purchases.html', requests=admin_requests)
-
-
-@app.route('/User/fix_item', methods=['POST'])
-def fix_item():
-    item_id = request.get_json()['item_id']
-    item = Inventory.query.filter(Inventory.id == item_id).first()
-    req = FixRequest()
-    req.user_id = current_user.id
-    req.inventory_id = item_id
-    req.quality = item.quality
-    req.status = 'На рассмотрении'
-    db.session.add(req)
-    db.session.commit()
-    return make_response('The Best!')
 
 
 def create_base_db():

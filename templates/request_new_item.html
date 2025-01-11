@@ -24,7 +24,7 @@
     </form>
     <div style="display: flex; justify-content: center;">
 
-        <div id="item-table" style="border: 2px solid black; text-align: center; width: 60%;">
+        <div id="item-table" style="border: 2px solid black; text-align: center; width: 80%;">
             {% for item in inventory %}
                 <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
                     <div>
@@ -32,11 +32,12 @@
                         <h3>Состояние: {{ item[3] }}</h3>
                     </div>
                     <h3>Осталось: {{ item[2] }}</h3>
+
                     <div style="display: flex; justify-content: space-between;">
                         <p>Заказать: </p>
                         <input id="input-{{item[0]}}" min="0" max="{{item[2]}}" value="0" required type="number">
                     </div>
-
+                    <p>Вы сделали заказ. <br> Сейчас ваша заявка на рассмотрении</p>
                     <button id="{{item[0]}}" name="{{ item[0] }}" class="change-item">Заказать предмет</button>
                 </div>
             {% endfor %}

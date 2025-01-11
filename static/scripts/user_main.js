@@ -17,7 +17,7 @@ table_request.addEventListener('click', async function(event) {
                 window.location.href = '/user/main';
             },
             error: function(error) {
-                console.log('Error (:/)')
+                console.log('Error (:/)');
             }
         });
     }
