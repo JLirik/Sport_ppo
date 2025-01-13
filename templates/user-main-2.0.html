@@ -5,52 +5,69 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>userinventar</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=BIZ+UDPGothic&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
+    <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo+2&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Navbar-Right-Links-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="/static/assets/css/Navbar-Right-Links-icons.css">
 </head>
 
 <body style="background: rgb(255,247,235);">
+{% if current_user.is_authenticated %}
     <nav class="navbar navbar-light navbar-expand-md py-3" style="background: #ffffff;border-bottom: 8px solid rgb(116,151,160) ;">
         <div class="container">
-            <div class="collapse navbar-collapse" id="navcol-2"><img src="assets/img/sport.png" style="width: 27%;height: 20%;">
+            <div class="collapse navbar-collapse" id="navcol-2"><img src="/static/assets/img/sport.png" style="width: 27%;height: 20%;">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"></li>
                 </ul>
-                <h1 style="color: rgb(3,59,100);font-family: 'Dela Gothic One', serif;font-size: 120%;">username</h1><a class="btn btn-primary ms-md-2" role="button" href="#" style="margin-top: -2px;border-bottom-color: rgb(116,151,160);font-family: 'Dela Gothic One', serif;color: rgb(255,136,14);background: rgb(3,59,100);">Выйти</a>
+                <h1 style="color: rgb(3,59,100);font-family: 'Dela Gothic One', serif;font-size: 120%;">{{ current_user.name }}</h1><a class="btn btn-primary ms-md-2" href="/logout" style="margin-top: -2px;border-bottom-color: rgb(116,151,160);font-family: 'Dela Gothic One', serif;color: rgb(255,136,14);background: rgb(3,59,100);">Выйти</a>
             </div>
         </div>
     </nav>
     <div class="container" style="margin-top: 4%;">
         <div class="row">
-            <div class="col-md-6" style="width: 20%;"><button class="btn btn-primary" type="button" style="background: rgb(3,59,100);font-family: 'Exo 2', sans-serif;margin: 0px;margin-top: 8px;">Создать заявку на получение инвентаря</button></div>
+            <div class="col-md-6" style="width: 20%;">
+                <form action="/user/request_new_item" method="get">
+                    <button class="btn btn-primary" style="background: rgb(3,59,100);font-family: 'Exo 2', sans-serif;margin: 0px;margin-top: 8px;">Создать заявку на получение инвентаря</button>
+                </form>
+            </div>
+
             <div class="col">
                 <div class="table-responsive" style="border: 4.4px solid rgb(116,151,160);border-radius: 24px;padding-top: 0px;margin: 0px;">
-                    <table class="table">
+                    <table class="table" id="item-table">
                         <thead style="margin: 0px;border-bottom: 3px dashed rgb(116,151,160);">
                             <tr>
                                 <th style="color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-right: 3px dashed rgb(116,151,160) ;">Наименование</th>
-                                <th style="color: rgb(3,59,100);border-right: 3px dashed rgb(116,151,160);font-family: 'Exo 2', sans-serif;">Количество</th>
-                                <th style="color: rgb(3,59,100);border-right-width: 3px;border-right-color: rgb(116,151,160);">Состояние</th>
+                                <th style="color: rgb(3,59,100);border-right: 3px dashed rgb(116,151,160);font-family: 'Exo 2', sans-serif;">Состояние</th>
                                 <th style="color: rgb(3,59,100);border-bottom-width: 0px;border-bottom-color: var(--bs-table-bg);"></th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for item in inventory %}
                             <tr>
-                                <td>Cell 1</td>
-                                <td>Cell 2</td>
-                                <td>Cell 2</td>
-                                <td style="width: 20%;"><button class="btn btn-primary" type="button" style="background: rgb(116,151,160);">Заменить предмет</button></td>
+                                <td style="font-family: 'Exo 2';border-width: 0px;">{{ item[1] }}</td>
+                                <td style="font-family: 'Exo 2';border-width: 0px;">{{ item[2] }}</td>
+                                {% if item[3] %}
+                                    <td style="font-family: 'Exo 2';border-width: 0px;">Статус заявки: {{item[3]}}</td>
+                                {% else %}
+                                    <td style="border-width: 0px;width: 20%;"><button id="{{ item[0] }}" class="btn btn-primary" type="button" style="background: rgb(116,151,160);">Заменить предмет</button></td>
+                                {% endif %}
                             </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/user_main.js')}}"></script>
+    <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/assets/js/bs-init.js"></script>
+{% else %}
+    <h1>Бро, тебе нужно авторизоваться</h1>
+{% endif %}
 </body>
 
 </html>
