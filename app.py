@@ -190,7 +190,7 @@ def update_request_status():
     request_id = data.get('id')
     action = data.get('action')
     status = data.get('status')
-    if status == 1:
+    if status == 0:
         request_to_fix = FixRequest.query.filter_by(id=request_id).first()
         if not request_to_fix:
             return jsonify(success=False, message="Запрос не найден"), 404
@@ -205,14 +205,14 @@ def update_request_status():
         db.session.commit()
         return jsonify(success=True)
 
-    elif status == 0:
+    elif status == 1:
         request_to_new = NewRequest.query.filter_by(id=request_id).first()
         if not request_to_new:
             return jsonify(success=False, message="Запрос не найден"), 404
         if action == 'accept':
             request_to_new.status = 'Принята'
-            take = Take()
-            # Добавление
+            take = Take(user_id=request_to_new.user_id, inventory_id=request_to_new.inventory_id)
+            db.session.add(take)
         elif action == 'reject':
             request_to_new.status = 'Отклонена'
         db.session.commit()

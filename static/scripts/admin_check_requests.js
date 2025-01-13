@@ -1,31 +1,37 @@
-$(document).ready(function() {
-    const updateRequestStatus = (id, action) => {
+$(document).ready(function () {
+    $('.accept-btn').on('click', function () {
+        const requestId = $(this).data('id');
+        const status = $(this).data('status');
+        sendRequest(requestId, 'accept', status);
+    });
+
+    $('.reject-btn').on('click', function () {
+        const requestId = $(this).data('id');
+        const status = $(this).data('status');
+        sendRequest(requestId, 'reject', status);
+    });
+
+    function sendRequest(id, action, status) {
         $.ajax({
             url: '/admin/update_request_status',
-            method: 'POST',
+            type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ id: id, action: action, status: status }),
-            success: function(data) {
-                if (data.success) {
-                    alert('Статус обновлён успешно');
-                    location.reload();
+            data: JSON.stringify({
+                id: id,
+                action: action,
+                status: status
+            }),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message || 'Запрос успешно обработан');
                 } else {
-                    alert(`Ошибка: ${data.message}`);
+                    alert('Ошибка: ' + response.message);
                 }
             },
-            error: function() {
-                alert('Ошибка при обновлении статуса.');
+            error: function (xhr, status, error) {
+                alert('Произошла ошибка при обработке запроса.');
+                console.error('Ошибка:', error);
             }
         });
-    };
-
-    $('.accept-btn').on('click', function() {
-        const id = $(this).data('id');
-        updateRequestStatus(id, 'accept');
-    });
-
-    $('.reject-btn').on('click', function() {
-        const id = $(this).data('id');
-        updateRequestStatus(id, 'reject');
-    });
+    }
 });
