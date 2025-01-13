@@ -9,35 +9,43 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="static/assets/css/Login-Form-Basic-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/admin_update_inventory.js')}}"></script>
 </head>
 
 <body>
 {% if current_user.is_authenticated %}
-    <div style="display: flex; justify-content: space-between">
+    <header style="display: flex; justify-content: space-between; padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
         <h5>ADMIN</h5>
-        <h5>имя - {{ current_user.name }}</h5>
-        <a href="/logout">Выйти</a>
+        <h3>Имя: {{ current_user.name }}</h3>
+        <a href="/logout" class="btn btn-danger btn-sm">Выйти</a>
+    </header>
+
+    <div style="display: flex; justify-content: space-between; margin: 10px;">
+        <form action="/admin/check_requests" method="get">
+            <button class="btn btn-primary">Посмотреть заявки</button>
+        </form>
+        <form action="/admin/purchases" method="get">
+            <button class="btn btn-secondary">Закупить инвентарь</button>
+        </form>
     </div>
-    <div style="display: flex; justify-content: space-between">
-    <form action="/admin/check_requests" method="get">
-        <button class="check-requests">Посмотреть заявки</button>
-    </form>
-    <form action="/admin/purchases" method="get">
-        <button class="purchases">Закупить инвентарь</button>
-    </form>
-    </div>
-    <div style="display: flex; justify-content: center;">
-        <div style="border: 2px solid black; text-align: center; width: 60%;">
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <div style="border: 2px solid black; text-align: center; width: 60%; padding: 20px;">
             {% for item in inventory %}
                 <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
-                    <h2>Название : {{ item[1] }}</h2>
-                    <h3>Всего : {{ item[2] }}</h3>
+                    <input type="text" id="name_{{ item[0] }}" value="{{ item[1] }}" style="width: 20%; text-align: center;" required>
+                    <input type="number" id="quantity_{{ item[0] }}" value="{{ item[2] }}" style="width: 10%; text-align: center;" min="0" required>
                     <h3>Свободно: {{ item[3] }}</h3>
-                    <h3>Качество: {{ item[4] }}</h3>
+                    <select id="quality_{{ item[0] }}" style="width: 15%; text-align: center;">
+                        <option value="Новый" {% if item[4] == "Новый" %}selected{% endif %}>Новый</option>
+                        <option value="Сломанный" {% if item[4] == "Сломанный" %}selected{% endif %}>Сломанный</option>
+                    </select>
+                    <button class="btn btn-success" onclick="updateInventory({{ item[0] }})">Сохранить</button>
                 </div>
             {% endfor %}
         </div>
     </div>
-
 {% endif %}
 </body>
+</html>

@@ -201,6 +201,23 @@ def update_request_status():
     db.session.commit()
     return jsonify(success=True)
 
+@app.route('/admin/update_inventory', methods=['POST'])
+def update_inventory():
+    data = request.get_json()
+    item_id = data.get('item_id')
+    new_name = data.get('name')
+    new_quantity = data.get('quantity')
+    new_quality = data.get('quality')
+
+    inventory = Inventory.query.filter_by(id=item_id).first()
+    if inventory:
+        inventory.name = new_name
+        inventory.quantity = new_quantity
+        inventory.quality = new_quality
+        db.session.commit()
+        return jsonify(success=True, message="Данные инвентаря обновлены")
+    return jsonify(success=False, message="Инвентарь не найден")
+
 
 @app.route('/admin/purchases', methods=['GET'])
 def purchases():
