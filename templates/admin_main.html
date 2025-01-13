@@ -34,11 +34,9 @@
             {% for item in inventory %}
                 <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
                     <input type="text" id="name_{{ item[0] }}" value="{{ item[1] }}" style="width: 20%; text-align: center;" required>
-                    <input type="number" id="quantity_{{ item[0] }}" value="{{ item[2] }}" style="width: 10%; text-align: center;" min="0" required>
-                    <h3>Свободно: {{ item[3] }}</h3>
                     <select id="quality_{{ item[0] }}" style="width: 15%; text-align: center;">
-                        <option value="Новый" {% if item[4] == "Новый" %}selected{% endif %}>Новый</option>
-                        <option value="Сломанный" {% if item[4] == "Сломанный" %}selected{% endif %}>Сломанный</option>
+                        <option value="Новый" {% if item[2] == "Новый" %}selected{% endif %}>Новый</option>
+                        <option value="Сломанный" {% if item[2] == "Сломанный" %}selected{% endif %}>Сломанный</option>
                     </select>
                     <button class="btn btn-success" onclick="updateInventory({{ item[0] }})">Сохранить</button>
                 </div>
