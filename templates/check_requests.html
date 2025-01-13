@@ -26,11 +26,10 @@
                 <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
                     <h2>Пользователь: {{ req[1] }}</h2>
                     <h3>Название : {{ req[2] }}</h3>
-                    <h3>Количество: {{ req[3] }}</h3>
-                    <h3>Качество: {{ req[4] }}</h3>
+                    <h3>Качество: {{ req[3] }}</h3>
                     <div style="display: flex; flex-direction: column;">
-                        <button class="accept-btn" data-id="{{ req[0] }}">Принять</button>
-                        <button class="reject-btn" data-id="{{ req[0] }}">Отклонить</button>
+                        <button class="accept-btn" data-id="{{ req[0], req[-1] }}">Принять</button>
+                        <button class="reject-btn" data-id="{{ req[0], req[-1] }}">Отклонить</button>
                     </div>
                 </div>
             {% endfor %}

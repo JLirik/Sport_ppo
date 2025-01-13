@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="static/assets/css/Login-Form-Basic-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/admin_update_inventory.js')}}"></script>
 </head>
 
 <body>
@@ -19,25 +21,28 @@
         <a href="/logout">Выйти</a>
     </div>
     <div style="display: flex; justify-content: space-between">
-    <form action="/admin/check_requests" method="get">
-        <button class="check-requests">Посмотреть заявки</button>
-    </form>
-    <form action="/admin/purchases" method="get">
-        <button class="purchases">Закупить инвентарь</button>
-    </form>
+        <form action="/admin/check_requests" method="get">
+            <button class="check-requests">Посмотреть заявки</button>
+        </form>
+        <form action="/admin/purchases" method="get">
+            <button class="purchases">Закупить инвентарь</button>
+        </form>
     </div>
-    <div style="display: flex; justify-content: center;">
-        <div style="border: 2px solid black; text-align: center; width: 60%;">
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <div style="border: 2px solid black; text-align: center; width: 60%; padding: 20px;">
             {% for item in inventory %}
                 <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
-                    <h2>Название : {{ item[1] }}</h2>
-                    <h3>Всего : {{ item[2] }}</h3>
-                    <h3>Свободно: {{ item[3] }}</h3>
-                    <h3>Качество: {{ item[4] }}</h3>
+                    <input type="text" id="name_{{ item[0] }}" value="{{ item[1] }}" style="width: 20%; text-align: center;" required>
+                    <select id="quality_{{ item[0] }}" style="width: 15%; text-align: center;">
+                        <option value="Новый" {% if item[2] == "Новый" %}selected{% endif %}>Новый</option>
+                        <option value="Сломанный" {% if item[2] == "Сломанный" %}selected{% endif %}>Сломанный</option>
+                    </select>
+                    <button class="btn btn-success" onclick="updateInventory({{ item[0] }})">Сохранить</button>
                 </div>
             {% endfor %}
         </div>
     </div>
-
 {% endif %}
 </body>
+</html>
