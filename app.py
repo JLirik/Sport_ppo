@@ -97,7 +97,7 @@ def user_main():
         status = False
         if fixes:
             status = fixes.status
-        user_inventory.append((product.id, product.name, item.quantity, product.quality, status))
+        user_inventory.append((product.id, product.name, product.quality, status))
     return render_template('user_main.html', inventory=user_inventory)
 
 
@@ -111,7 +111,7 @@ def admin_main():
     taken_item = Inventory.query.all()
     all_inventory = []
     for item in taken_item:
-        all_inventory.append((item.id, item.name, item.quantity, item.last_quantity, item.quality))
+        all_inventory.append((item.id, item.name, item.quality))
     return render_template('admin_main.html', inventory=all_inventory)
 
 
@@ -126,7 +126,7 @@ def logout():
 @app.route('/user/request_new_item', methods=['GET'])
 def request_new_item():
     if current_user.is_authenticated:
-        inventory = [[item.id, item.name, item.last_quantity, item.quality] for item in
+        inventory = [[item.id, item.name, item.quality] for item in
                      Inventory.query.all()]
         return render_template('request_new_item.html', inventory=inventory)
     else:
@@ -139,12 +139,10 @@ def send_new_item():
     print(1)
     user_id = current_user.id
     item_id = data['item_id']
-    quantity = data['quantity']
 
     ask_item = NewRequest()
     ask_item.user_id = user_id
     ask_item.inventory_id = item_id
-    ask_item.quantity = quantity
     ask_item.status = 'Отправлено'
     db.session.add(ask_item)
     db.session.commit()
@@ -177,8 +175,7 @@ def check_requests():
     user_requests = []
     for ask in taken_item:
         user_requests.append((ask.id, User.query.filter(User.id == ask.user_id).first().name,
-                              Inventory.query.filter(Inventory.id == ask.inventory_id).first().name,
-                              Inventory.query.filter(Inventory.id == ask.inventory_id).first().quantity, ask.quality))
+                              Inventory.query.filter(Inventory.id == ask.inventory_id).first().name, ask.quality))
     return render_template('check_requests.html', user_requests=user_requests)
 
 
@@ -206,13 +203,11 @@ def update_inventory():
     data = request.get_json()
     item_id = data.get('item_id')
     new_name = data.get('name')
-    new_quantity = data.get('quantity')
     new_quality = data.get('quality')
 
     inventory = Inventory.query.filter_by(id=item_id).first()
     if inventory:
         inventory.name = new_name
-        inventory.quantity = new_quantity
         inventory.quality = new_quality
         db.session.commit()
         return jsonify(success=True, message="Данные инвентаря обновлены")
@@ -230,7 +225,7 @@ def purchases():
     taken_item = AdminRequest.query.all()
     admin_requests = []
     for item in taken_item:
-        admin_requests.append((item.id, item.name, item.price, item.quantity, item.provider_name))
+        admin_requests.append((item.id, item.name, item.price, item.provider_name))
     return render_template('purchases.html', requests=admin_requests)
 
 
@@ -248,31 +243,22 @@ def create_base_db():
                       is_admin=1)
     db.session.add(to_db_user)
     to_db_inventory = Inventory(name='мяч1',
-                                quantity=50,
-                                last_quantity=30,
                                 quality='Сломанный')
     db.session.add(to_db_inventory)
     to_db_inventory = Inventory(name='мяч2',
-                                quantity=10,
-                                last_quantity=8,
                                 quality='Новый')
     db.session.add(to_db_inventory)
     to_db_inventory = Inventory(name='мяч3',
-                                quantity=50,
-                                last_quantity=40,
                                 quality='Новый')
     db.session.add(to_db_inventory)
     to_db_take = Take(user_id=1,
-                      inventory_id=1,
-                      quantity=20)
+                      inventory_id=1)
     db.session.add(to_db_take)
     to_db_take = Take(user_id=1,
-                      inventory_id=2,
-                      quantity=2)
+                      inventory_id=2)
     db.session.add(to_db_take)
     to_db_take = Take(user_id=2,
-                      inventory_id=3,
-                      quantity=10)
+                      inventory_id=3)
     db.session.add(to_db_take)
     db.session.commit()
 
