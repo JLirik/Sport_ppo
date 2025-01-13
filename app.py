@@ -92,8 +92,9 @@ def user_main():
     taken_item = Take.query.filter_by(user_id=current_user.id).all()
     user_inventory = []
     for item in taken_item:
-        product = Inventory.query.filter_by(id=item.id).first()
-        fixes = FixRequest.query.filter_by(user_id=current_user.id, inventory_id=item.id).first()
+        product = Inventory.query.filter_by(id=item.inventory_id).first()
+        fixes = FixRequest.query.filter_by(user_id=current_user.id, inventory_id=item.inventory_id).first()
+        print(product, fixes, item, item.id)
         status = False
         if fixes:
             status = fixes.status

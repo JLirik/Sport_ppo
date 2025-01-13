@@ -23,13 +23,14 @@ $(document).ready(function () {
             }),
             success: function (response) {
                 if (response.success) {
-                    alert(response.message || 'Запрос успешно обработан');
+                    location.reload();
+                    console.log(response.message || 'Запрос успешно обработан');
                 } else {
-                    alert('Ошибка: ' + response.message);
+                    console.log('Ошибка: ' + response.message);
                 }
             },
             error: function (xhr, status, error) {
-                alert('Произошла ошибка при обработке запроса.');
+                console.log('Произошла ошибка при обработке запроса.');
                 console.error('Ошибка:', error);
             }
         });

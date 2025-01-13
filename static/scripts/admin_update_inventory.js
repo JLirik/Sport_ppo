@@ -14,13 +14,13 @@ function updateInventory(itemId) {
         }),
         success: function (response) {
             if (response.success) {
-                alert(response.message);
+                console.log(response.message);
             } else {
-                alert("Ошибка: " + response.message);
+                console.log("Ошибка: " + response.message);
             }
         },
         error: function (xhr, status, error) {
-            alert("Произошла ошибка при обновлении данных.");
+            console.log("Произошла ошибка при обновлении данных.");
             console.error('Error:', error);
         }
     });
