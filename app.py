@@ -98,7 +98,7 @@ def user_main():
         if fixes:
             status = fixes.status
         user_inventory.append((product.id, product.name, item.quantity, product.quality, status))
-    return render_template('user_main.html', inventory=user_inventory)
+    return render_template('user-main-2.0.html', inventory=user_inventory)
 
 
 @app.route('/admin/main', methods=['GET'])
