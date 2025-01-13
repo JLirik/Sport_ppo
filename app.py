@@ -143,7 +143,8 @@ def send_new_item():
     ask_item = NewRequest()
     ask_item.user_id = user_id
     ask_item.inventory_id = item_id
-    ask_item.status = 'Отправлено'
+    ask_item.quality = Inventory.query.filter(Inventory.id == item_id).first().quality
+    ask_item.status = 'На рассмотрении'
     db.session.add(ask_item)
     db.session.commit()
 
@@ -188,19 +189,34 @@ def update_request_status():
     data = request.get_json()
     request_id = data.get('id')
     action = data.get('action')
-    request_record = FixRequest.query.filter_by(id=request_id).first()
-    if not request_record:
-        return jsonify(success=False, message="Запрос не найден"), 404
+    status = data.get('status')
+    if status == 1:
+        request_to_fix = FixRequest.query.filter_by(id=request_id).first()
+        if not request_to_fix:
+            return jsonify(success=False, message="Запрос не найден"), 404
 
-    if action == 'accept':
-        request_record.status = 'Принята'
-        inventory = Inventory.query.filter_by(id=request_record.inventory_id).first()
-        if inventory:
-            inventory.quality = 'Новый'
-    elif action == 'reject':
-        request_record.status = 'Отклонена'
-    db.session.commit()
-    return jsonify(success=True)
+        if action == 'accept':
+            request_to_fix.status = 'Принята'
+            inventory = Inventory.query.filter_by(id=request_to_fix.inventory_id).first()
+            if inventory:
+                inventory.quality = 'Новый'
+        elif action == 'reject':
+            request_to_fix.status = 'Отклонена'
+        db.session.commit()
+        return jsonify(success=True)
+
+    elif status == 0:
+        request_to_new = NewRequest.query.filter_by(id=request_id).first()
+        if not request_to_new:
+            return jsonify(success=False, message="Запрос не найден"), 404
+        if action == 'accept':
+            request_to_new.status = 'Принята'
+            take = Take()
+            # Добавление
+        elif action == 'reject':
+            request_to_new.status = 'Отклонена'
+        db.session.commit()
+        return jsonify(success=True)
 
 @app.route('/admin/update_inventory', methods=['POST'])
 def update_inventory():

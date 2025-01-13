@@ -4,7 +4,7 @@ $(document).ready(function() {
             url: '/admin/update_request_status',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ id: id, action: action }),
+            data: JSON.stringify({ id: id, action: action, status: status }),
             success: function(data) {
                 if (data.success) {
                     alert('Статус обновлён успешно');

@@ -27,9 +27,14 @@
                     <h2>Пользователь: {{ req[1] }}</h2>
                     <h3>Название : {{ req[2] }}</h3>
                     <h3>Качество: {{ req[3] }}</h3>
+                    {% if req[4] == 0 %}
+                    <h3>Запрос: Замена </h3>
+                    {% else %}
+                    <h3>Запрос: Добавление </h3>
+                    {% endif %}
                     <div style="display: flex; flex-direction: column;">
-                        <button class="accept-btn" data-id="{{ req[0], req[-1] }}">Принять</button>
-                        <button class="reject-btn" data-id="{{ req[0], req[-1] }}">Отклонить</button>
+                        <button class="accept-btn" data-id="{{ req[0] }}" data-status="{{ req[4] }}">Принять</button>
+                        <button class="reject-btn" data-id="{{ req[0] }}" data-status="{{ req[4] }}">Отклонить</button>
                     </div>
                 </div>
             {% endfor %}
