@@ -97,7 +97,7 @@ def user_main():
         status = False
         if fixes:
             status = fixes.status
-        user_inventory.append((product.id, product.name, item.quantity, product.quality, status))
+        user_inventory.append((product.id, product.name, product.quality, status))
     return render_template('user-main-2.0.html', inventory=user_inventory)
 
 
@@ -201,6 +201,7 @@ def update_request_status():
         request_record.status = 'Отклонена'
     db.session.commit()
     return jsonify(success=True)
+
 
 @app.route('/admin/update_inventory', methods=['POST'])
 def update_inventory():
