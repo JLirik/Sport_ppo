@@ -15,18 +15,17 @@
 
 <body>
 {% if current_user.is_authenticated %}
-    <header style="display: flex; justify-content: space-between; padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+    <div style="display: flex; justify-content: space-between">
         <h5>ADMIN</h5>
-        <h3>Имя: {{ current_user.name }}</h3>
-        <a href="/logout" class="btn btn-danger btn-sm">Выйти</a>
-    </header>
-
-    <div style="display: flex; justify-content: space-between; margin: 10px;">
+        <h5>имя - {{ current_user.name }}</h5>
+        <a href="/logout">Выйти</a>
+    </div>
+    <div style="display: flex; justify-content: space-between">
         <form action="/admin/check_requests" method="get">
-            <button class="btn btn-primary">Посмотреть заявки</button>
+            <button class="check-requests">Посмотреть заявки</button>
         </form>
         <form action="/admin/purchases" method="get">
-            <button class="btn btn-secondary">Закупить инвентарь</button>
+            <button class="purchases">Закупить инвентарь</button>
         </form>
     </div>
 
