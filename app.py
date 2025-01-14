@@ -129,7 +129,8 @@ def request_new_item():
     if current_user.is_authenticated:
         inventory = [[item.id, item.name, item.quality] for item in
                      Inventory.query.all()]
-        return render_template('request_new_item.html', inventory=inventory)
+        sended = [item.id for item in NewRequest.query.filter(NewRequest.user_id == current_user.id).all()]
+        return render_template('request_new_item.html', inventory=inventory, send_list=sended)
     else:
         return redirect(url_for('home'))
 
