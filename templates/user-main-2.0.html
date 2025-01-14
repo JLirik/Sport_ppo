@@ -29,29 +29,29 @@
         <div class="row">
             <div class="col-md-6" style="width: 20%;">
                 <form action="/user/request_new_item" method="get">
-                    <button class="btn btn-primary" style="background: rgb(3,59,100);font-family: 'Exo 2', sans-serif;margin: 0px;margin-top: 8px;">Создать заявку на получение инвентаря</button>
+                    <button class="btn btn-primary" style="background: rgb(3,59,100);font-family: 'Exo 2', sans-serif;font-size: 110%;margin: 0px;margin-top: 8px;">Создать заявку на получение инвентаря</button>
                 </form>
             </div>
 
             <div class="col" style="width: 80%;">
-                <div class="table-responsive" style="border: 4.4px solid rgb(116,151,160);border-radius: 24px;padding-top: 0px;margin: 0px;">
+                <div class="table-responsive" style="padding-top: 0px;margin: 0px;">
                     <table class="table" id="item-table">
-                        <thead style="margin: 0px;border-bottom: 3px dashed rgb(116,151,160);">
+                        <thead style="margin: 0px;">
                             <tr>
-                                <th style="color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-right: 3px dashed rgb(116,151,160) ;">Наименование</th>
-                                <th style="color: rgb(3,59,100);border-right: 3px dashed rgb(116,151,160);font-family: 'Exo 2', sans-serif;">Состояние</th>
-                                <th style="color: rgb(3,59,100);border-bottom-width: 0px;border-bottom-color: var(--bs-table-bg);"></th>
+                                <th style="color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-left: 4px solid rgb(116,151,160);border-bottom: 4px solid rgb(116,151,160);border-top: 4px solid rgb(116,151,160);border-right: 4px solid rgb(116,151,160);font-size: 130%;">Наименование</th>
+                                <th style="color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-left: 4px solid rgb(116,151,160);border-bottom: 4px solid rgb(116,151,160);border-top: 4px solid rgb(116,151,160);font-size: 130%;">Состояние</th>
+                                <th style="color: rgb(3,59,100);border-right: 4px solid rgb(116,151,160);border-bottom: 4px solid rgb(116,151,160);border-top: 4px solid rgb(116,151,160);"></th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for item in inventory %}
                             <tr>
-                                <td style="color: rgb(3,59,100);font-family: 'Exo 2';border-width: 0px;">{{ item[1] }}</td>
-                                <td style="color: rgb(3,59,100);font-family: 'Exo 2';border-width: 0px;">{{ item[2] }}</td>
+                                <td style="font-size: 125%;border-left: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);color: rgb(3,59,100);font-family: 'Exo 2'">{{ item[1] }}</td>
+                                <td style="font-size: 125%;border-bottom: 3px solid rgb(116,151,160);border-left: 3px dashed rgb(116,151,160);border-top: 3px solid rgb(116,151,160);color: rgb(3,59,100);font-family: 'Exo 2'">{{ item[2] }}</td>
                                 {% if item[3] %}
-                                    <td style="font-family: 'Exo 2';border-width: 0px;">Статус заявки: {{item[3]}}</td>
+                                    <td style="font-size: 125%;border-right: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);font-family: 'Exo 2';color: rgb(3,59,100)">Статус заявки: {{item[3]}}</td>
                                 {% else %}
-                                    <td style="border-width: 0px;width: 20%;"><button id="{{ item[0] }}" class="btn btn-primary" type="button" style="background: rgb(116,151,160);">Заменить предмет</button></td>
+                                    <td style="border-right: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);width: 20%;"><button id="{{ item[0] }}" class="btn btn-primary" type="button" style="font-family: 'Exo 2';background: rgb(116,151,160);">Заменить предмет</button></td>
                                 {% endif %}
                             </tr>
                         {% endfor %}
