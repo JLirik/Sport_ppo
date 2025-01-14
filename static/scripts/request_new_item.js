@@ -12,7 +12,13 @@ table_request.addEventListener('click', async function(event) {
             }),
             success: function(response) {
                 console.log(response);
-                location.reload;
+//                location.reload;
+                document.getElementById(id).remove();
+                const cur_div = document.getElementById('div-' + id);
+                const new_text = document.createElement('p');
+                new_text.style = ''
+                new_text.textContent = 'Вы сделали заказ. Сейчас ваша заявка на рассмотрении';
+                cur_div.appendChild(new_text)
             },
             error: function(error) {
                 console.log('Error!!!');
