@@ -31,7 +31,11 @@
                         <h2>{{ item[1] }}</h2>
                         <h3>Состояние: {{ item[2] }}</h3>
                     </div>
-                    <button id="{{item[0]}}" name="{{ item[0] }}" class="change-item">Заказать предмет</button>
+                    {% if item[0] in send_list %}
+                        <p>Вы сделали заказ. <br> Сейчас ваша заявка на рассмотрении</p>
+                    {% else %}
+                        <button id="{{item[0]}}" name="{{ item[0] }}" class="change-item">Заказать предмет</button>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
