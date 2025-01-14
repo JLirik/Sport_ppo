@@ -2,6 +2,7 @@ from flask import *
 from models import *
 from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
+import pandas as pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ppo_pumpkin'
@@ -250,6 +251,25 @@ def purchases():
     for item in taken_item:
         admin_requests.append((item.id, item.name, item.price, item.provider_name))
     return render_template('purchases.html', requests=admin_requests)
+
+@app.route('/admin/create_report', methods=['GET'])
+def create_report():
+    take = Take.query.all()
+    data = {'Имя клиента': [], 'Название инвентаря': [], 'Состояние инвентарая': []}
+    for item in take:
+        cname = User.query.filter(User.id == item.user_id).first().name
+        iname = Inventory.query.filter(Inventory.id == item.inventory_id).first().name
+        quality = Inventory.query.filter(Inventory.id == item.inventory_id).first().quality
+        data['Имя клиента'].append(cname)
+        data['Название инвентаря'].append(iname)
+        data['Состояние инвентарая'].append(quality)
+        df = pd.DataFrame(data)
+        df.to_excel('123.xlsx', sheet_name='Отчёт')
+        # output.headers["Content-Disposition"] = "attachment; filename=report.xlsx"
+        # output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    return None
+
+
 
 
 def create_base_db():

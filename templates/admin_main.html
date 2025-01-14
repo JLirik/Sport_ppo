@@ -27,6 +27,7 @@
         <form action="/admin/purchases" method="get">
             <button class="purchases">Закупить инвентарь</button>
         </form>
+        <button class="create_report_button">Создать отчёт</button>
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 20px;">
@@ -41,6 +42,7 @@
                     <button class="btn btn-success" onclick="updateInventory({{ item[0] }})">Сохранить</button>
                 </div>
             {% endfor %}
+            <script src="{{url_for('static', filename='/scripts/admin_main.js')}}"></script>
         </div>
     </div>
 {% endif %}
