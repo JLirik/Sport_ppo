@@ -17,7 +17,7 @@ table_request.addEventListener('click', async function(event) {
                 const cur_div = document.getElementById('div-' + id);
                 const new_text = document.createElement('p');
                 new_text.style = ''
-                new_text.textContent = 'Вы сделали заказ. Сейчас ваша заявка на рассмотрении';
+                new_text.textContent = 'Вы сделали заказ.\n Сейчас ваша заявка на рассмотрении';
                 cur_div.appendChild(new_text)
             },
             error: function(error) {
