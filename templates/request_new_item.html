@@ -26,12 +26,11 @@
 
         <div id="item-table" style="border: 2px solid black; text-align: center; width: 80%;">
             {% for item in inventory %}
-                <div style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
+                <div id="div-{{item[0]}}" style="display: flex; justify-content: space-between; margin: 10px; padding: 5px; border-bottom: 1px solid black">
                     <div>
                         <h2>{{ item[1] }}</h2>
                         <h3>Состояние: {{ item[2] }}</h3>
                     </div>
-                    <p>Вы сделали заказ. <br> Сейчас ваша заявка на рассмотрении</p>
                     <button id="{{item[0]}}" name="{{ item[0] }}" class="change-item">Заказать предмет</button>
                 </div>
             {% endfor %}
