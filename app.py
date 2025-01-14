@@ -128,10 +128,12 @@ def logout():
 @app.route('/user/request_new_item', methods=['GET'])
 def request_new_item():
     if current_user.is_authenticated:
-        inventory = [[item.id, item.name, item.quality] for item in
-                     Inventory.query.all()]
+        taken_ids = [subitem.inventory_id for subitem in Take.query.all()]
+        orderd_ids = [subitem.inventory_id for subitem in NewRequest.query.all()]
+        not_taken_inventory = [[item.id, item.name, item.quality] for item in
+                               Inventory.query.all() if item.id not in taken_ids + orderd_ids]
         sended = [item.id for item in NewRequest.query.filter(NewRequest.user_id == current_user.id).all()]
-        return render_template('request_new_item.html', inventory=inventory, send_list=sended)
+        return render_template('request_new_item.html', inventory=not_taken_inventory, send_list=sended)
     else:
         return redirect(url_for('home'))
 
