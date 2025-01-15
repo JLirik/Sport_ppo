@@ -1,9 +1,13 @@
+import io
+from io import BytesIO
+
+import openpyxl
 from flask import *
 from models import *
 from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
 import pandas as pd
-
+from flask import send_file
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ppo_pumpkin'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pumpkin.db'
@@ -256,19 +260,25 @@ def purchases():
 @app.route('/admin/create_report', methods=['GET'])
 def create_report():
     take = Take.query.all()
-    data = {'Имя клиента': [], 'Название инвентаря': [], 'Состояние инвентарая': []}
+    i = 2
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws['A1'] = 'Имя клиента'
+    ws['B1'] = 'Название инвентаря'
+    ws['C1'] = 'Состояние инвентаря'
     for item in take:
-        cname = User.query.filter(User.id == item.user_id).first().name
-        iname = Inventory.query.filter(Inventory.id == item.inventory_id).first().name
-        quality = Inventory.query.filter(Inventory.id == item.inventory_id).first().quality
-        data['Имя клиента'].append(cname)
-        data['Название инвентаря'].append(iname)
-        data['Состояние инвентарая'].append(quality)
-        df = pd.DataFrame(data)
-        df.to_excel('123.xlsx', sheet_name='Отчёт')
-        # output.headers["Content-Disposition"] = "attachment; filename=report.xlsx"
-        # output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    return None
+        ws[f'A{i}'] = User.query.filter(User.id == item.user_id).first().name
+        ws[f'B{i}'] = Inventory.query.filter(Inventory.id == item.inventory_id).first().name
+        ws[f'C{i}'] = Inventory.query.filter(Inventory.id == item.inventory_id).first().quality
+        i += 1
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    response = make_response(
+        send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    as_attachment=True, download_name='example.xlsx'))
+    response.headers['Content-Disposition'] = 'attachment; filename=response.xlsx'
+    return response
 
 
 def create_base_db():
