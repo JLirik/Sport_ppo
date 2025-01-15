@@ -129,11 +129,11 @@ def logout():
 def request_new_item():
     if current_user.is_authenticated:
         taken_ids = [subitem.inventory_id for subitem in Take.query.all()]
-        orderd_ids = [subitem.inventory_id for subitem in NewRequest.query.all()]
-        not_taken_inventory = [[item.id, item.name, item.quality] for item in
+        orderd_ids = [subitem.inventory_id for subitem in NewRequest.query.filter(NewRequest.user_id != current_user.id).all()]
+        not_taken_inventory = [[item.id, item.name, item.quality,
+                                NewRequest.query.filter(NewRequest.inventory_id == item.id).first().status if NewRequest.query.filter(NewRequest.inventory_id == item.id).first() else False] for item in
                                Inventory.query.all() if item.id not in taken_ids + orderd_ids]
-        sended = [item.id for item in NewRequest.query.filter(NewRequest.user_id == current_user.id).all()]
-        return render_template('request_new_item.html', inventory=not_taken_inventory, send_list=sended)
+        return render_template('request_new_item.html', inventory=not_taken_inventory)
     else:
         return redirect(url_for('home'))
 
@@ -254,6 +254,7 @@ def purchases():
         admin_requests.append((item.id, item.name, item.price, item.provider_name))
     return render_template('purchases.html', requests=admin_requests)
 
+
 @app.route('/admin/create_report', methods=['GET'])
 def create_report():
     take = Take.query.all()
@@ -270,8 +271,6 @@ def create_report():
         # output.headers["Content-Disposition"] = "attachment; filename=report.xlsx"
         # output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     return None
-
-
 
 
 def create_base_db():

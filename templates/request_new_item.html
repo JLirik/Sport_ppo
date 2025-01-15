@@ -31,8 +31,8 @@
                         <h2>{{ item[1] }}</h2>
                         <h3>Состояние: {{ item[2] }}</h3>
                     </div>
-                    {% if item[0] in send_list %}
-                        <p>Вы сделали заказ. <br> Сейчас ваша заявка на рассмотрении</p>
+                    {% if item[3] %}
+                        <p>Вы сделали заказ<br>Ваша заявка {{ item[3] }}</p>
                     {% else %}
                         <button id="{{item[0]}}" name="{{ item[0] }}" class="change-item">Заказать предмет</button>
                     {% endif %}
