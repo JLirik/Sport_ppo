@@ -249,7 +249,7 @@ def purchases():
     taken_item = AdminRequest.query.all()
     admin_requests = []
     for item in taken_item:
-        admin_requests.append((item.id, item.name, item.price, item.provider_name))
+        admin_requests.append((item.id, item.name, item.price, item.provider))
     return render_template('purchases.html', requests=admin_requests)
 
 
