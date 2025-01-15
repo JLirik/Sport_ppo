@@ -1,23 +1,22 @@
-const [SubmitButton] = document.getElementById('success');
-
+let SubmitButton = document.getElementById('success');
 
 SubmitButton.addEventListener('click', async function() {
-    let name = document.getElementByName('name').value;
-    let cost = document.getElementByName('cost').value;
-    let provider = document.getElementByName('provider').value;
-    if (name && cost && provider) {
+    let name = document.getElementById('name').value;
+    let price = document.getElementById('cost').value;
+    let provider = document.getElementById('provider').value;
+    if (name && price && provider) {
         $.ajax({
             url: '/admin/add_item',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
                 'name': name,
-                'cost': cost,
+                'price': price,
                 'provider': provider
             }),
             success: function(response) {
                 console.log(response);
-            }
+            },
             error: function(error) {
                 console.log(error);
             }

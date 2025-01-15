@@ -8,6 +8,7 @@ from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
 import pandas as pd
 from flask import send_file
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ppo_pumpkin'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pumpkin.db'
@@ -132,9 +133,12 @@ def logout():
 def request_new_item():
     if current_user.is_authenticated:
         taken_ids = [subitem.inventory_id for subitem in Take.query.all()]
-        orderd_ids = [subitem.inventory_id for subitem in NewRequest.query.filter(NewRequest.user_id != current_user.id).all()]
+        orderd_ids = [subitem.inventory_id for subitem in
+                      NewRequest.query.filter(NewRequest.user_id != current_user.id).all()]
         not_taken_inventory = [[item.id, item.name, item.quality,
-                                NewRequest.query.filter(NewRequest.inventory_id == item.id).first().status if NewRequest.query.filter(NewRequest.inventory_id == item.id).first() else False] for item in
+                                NewRequest.query.filter(
+                                    NewRequest.inventory_id == item.id).first().status if NewRequest.query.filter(
+                                    NewRequest.inventory_id == item.id).first() else False] for item in
                                Inventory.query.all() if item.id not in taken_ids + orderd_ids]
         return render_template('user-requests-2.0.html', inventory=not_taken_inventory)
     else:
@@ -244,12 +248,16 @@ def update_inventory():
 
 @app.route('/admin/add_item', methods=['POST'])
 def add_item():
-    # v razrabotke
     data = request.get_json()
     item_name = data['name']
-    item_cost = data['cost']
+    item_price = int(data['price'])
     provider = data['provider']
-
+    adm_requests = AdminRequest()
+    adm_requests.name = item_name
+    adm_requests.price = item_price
+    adm_requests.provider = provider
+    db.session.add(adm_requests)
+    db.session.commit()
     return make_response('GOOD!')
 
 
@@ -298,7 +306,7 @@ def create_report():
     output.seek(0)
     response = make_response(
         send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    as_attachment=True, download_name='example.xlsx'))
+                  as_attachment=True, download_name='example.xlsx'))
     response.headers['Content-Disposition'] = 'attachment; filename=response.xlsx'
     return response
 
@@ -345,13 +353,13 @@ def create_base_db():
     db.session.add(to_db_inventory)
 
     to_db_inventory = AdminRequest(name='Гантеля 1',
-                                price='100', provider='Спортмастер')
+                                   price='100', provider='Спортмастер')
     db.session.add(to_db_inventory)
     to_db_inventory = AdminRequest(name='Гантеля 2',
-                                price='10', provider='Декатлон')
+                                   price='10', provider='Декатлон')
     db.session.add(to_db_inventory)
     to_db_inventory = AdminRequest(name='Гантеля 3',
-                                price='30', provider='DeSport')
+                                   price='30', provider='DeSport')
     db.session.add(to_db_inventory)
 
     to_db_take = Take(user_id=1,
