@@ -95,7 +95,6 @@ def user_main():
     for item in taken_item:
         product = Inventory.query.filter_by(id=item.inventory_id).first()
         fixes = FixRequest.query.filter_by(user_id=current_user.id, inventory_id=item.inventory_id).first()
-        print(product, fixes, item, item.id)
         status = False
         if fixes:
             status = fixes.status
@@ -141,7 +140,6 @@ def request_new_item():
 @app.route('/User/send_new_item', methods=['POST'])
 def send_new_item():
     data = request.get_json()
-    print(1)
     user_id = current_user.id
     item_id = data['item_id']
 
@@ -286,15 +284,44 @@ def create_base_db():
                       password='LoveAlice',
                       is_admin=1)
     db.session.add(to_db_user)
-    to_db_inventory = Inventory(name='мяч1',
+    to_db_inventory = Inventory(name='Мяч 1',
                                 quality='Сломанный')
     db.session.add(to_db_inventory)
-    to_db_inventory = Inventory(name='мяч2',
+    to_db_inventory = Inventory(name='Мяч 2',
                                 quality='Новый')
     db.session.add(to_db_inventory)
-    to_db_inventory = Inventory(name='мяч3',
+    to_db_inventory = Inventory(name='Мяч 3',
                                 quality='Новый')
     db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гиря 1',
+                                quality='Сломанный')
+    db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гиря 2',
+                                quality='Новый')
+    db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гиря 3',
+                                quality='Новый')
+    db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гантеля 1',
+                                quality='Сломанный')
+    db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гантеля 2',
+                                quality='Новый')
+    db.session.add(to_db_inventory)
+    to_db_inventory = Inventory(name='Гантеля 3',
+                                quality='Новый')
+    db.session.add(to_db_inventory)
+
+    to_db_inventory = AdminRequest(name='Гантеля 1',
+                                price='100', provider='Спортмастер')
+    db.session.add(to_db_inventory)
+    to_db_inventory = AdminRequest(name='Гантеля 2',
+                                price='10', provider='Декатлон')
+    db.session.add(to_db_inventory)
+    to_db_inventory = AdminRequest(name='Гантеля 3',
+                                price='30', provider='DeSport')
+    db.session.add(to_db_inventory)
+
     to_db_take = Take(user_id=1,
                       inventory_id=1)
     db.session.add(to_db_take)
