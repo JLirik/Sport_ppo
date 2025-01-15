@@ -1,17 +1,17 @@
 button = document.getElementsByClassName('create_report_button')[0]
-
 button.addEventListener('click', function () {
-        $.ajax({
-            url: '/admin/create_report',
-            type: 'GET',
-            contentType: 'application/json',
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.log('Error');
-            }
-        });
+        fetch('/admin/create_report')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'example.xlsx';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Error downloading the file:', error));
 })
 
 
