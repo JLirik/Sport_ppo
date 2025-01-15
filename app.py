@@ -257,6 +257,17 @@ def purchases():
     return render_template('purchases.html', requests=admin_requests)
 
 
+@app.route('/admin/add_purchase', methods=['GET'])
+def add_purchase():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+
+    return render_template('add_purchase.html')
+
+
 @app.route('/admin/create_report', methods=['GET'])
 def create_report():
     take = Take.query.all()
