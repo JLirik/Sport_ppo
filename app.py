@@ -242,6 +242,17 @@ def update_inventory():
     return jsonify(success=False, message="Инвентарь не найден")
 
 
+@app.route('/admin/add_item', methods=['POST'])
+def add_item():
+    # v razrabotke
+    data = request.get_json()
+    item_name = data['name']
+    item_cost = data['cost']
+    provider = data['provider']
+
+    return make_response('GOOD!')
+
+
 @app.route('/admin/purchases', methods=['GET'])
 def purchases():
     if current_user.is_authenticated:
