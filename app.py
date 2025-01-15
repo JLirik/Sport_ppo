@@ -113,7 +113,7 @@ def admin_main():
     all_inventory = []
     for item in taken_item:
         all_inventory.append((item.id, item.name, item.quality))
-    return render_template('admin_main.html', inventory=all_inventory)
+    return render_template('admin-main-2.0.html', inventory=all_inventory)
 
 
 @app.route('/logout', methods=['GET'])
