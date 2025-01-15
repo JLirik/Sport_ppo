@@ -133,7 +133,7 @@ def request_new_item():
         not_taken_inventory = [[item.id, item.name, item.quality,
                                 NewRequest.query.filter(NewRequest.inventory_id == item.id).first().status if NewRequest.query.filter(NewRequest.inventory_id == item.id).first() else False] for item in
                                Inventory.query.all() if item.id not in taken_ids + orderd_ids]
-        return render_template('request_new_item.html', inventory=not_taken_inventory)
+        return render_template('user-requests-2.0.html', inventory=not_taken_inventory)
     else:
         return redirect(url_for('home'))
 
