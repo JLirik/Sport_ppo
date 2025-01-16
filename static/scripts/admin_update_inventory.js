@@ -1,6 +1,5 @@
 function updateInventory(itemId) {
     const newName = $(`#name_${itemId}`).val();
-    const newQuantity = $(`#quantity_${itemId}`).val();
     const newQuality = $(`#quality_${itemId}`).val();
     $.ajax({
         url: '/admin/update_inventory',
@@ -9,7 +8,6 @@ function updateInventory(itemId) {
         data: JSON.stringify({
             item_id: itemId,
             name: newName,
-            quantity: newQuantity,
             quality: newQuality
         }),
         success: function (response) {

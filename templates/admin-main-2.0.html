@@ -43,8 +43,8 @@
                         {% for item in inventory %}
                             <tr>
                                 <td style="border-left: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);color: rgb(3,59,100)"><input type="text" id="name_{{ item[0] }}" value="{{ item[1] }}" style="font-size: 125%;color: rgb(3,59,100);background: var(--bs-table-bg);border-color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;" required></td>
-                                <td style="border-bottom: 3px solid rgb(116,151,160);border-left: 3px dashed rgb(116,151,160);border-top: 3px solid rgb(116,151,160);color: rgb(3,59,100);"><select style="font-size: 125%;color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-color: rgb(3,59,100);">
-                                        <optgroup id="quality_{{ item[0] }}">
+                                <td style="border-bottom: 3px solid rgb(116,151,160);border-left: 3px dashed rgb(116,151,160);border-top: 3px solid rgb(116,151,160);color: rgb(3,59,100);"><select style="font-size: 125%;color: rgb(3,59,100);font-family: 'Exo 2', sans-serif;border-color: rgb(3,59,100);" id="quality_{{ item[0] }}">
+                                        <optgroup>
                                             <option value="Новый" {% if item[2] == "Новый" %}selected{% endif %}>Новый</option>
                                             <option value="Сломанный" {% if item[2] == "Сломанный" %}selected{% endif %}>Сломанный</option>
                                         </optgroup>

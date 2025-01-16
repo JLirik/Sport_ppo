@@ -236,7 +236,6 @@ def update_inventory():
     item_id = data.get('item_id')
     new_name = data.get('name')
     new_quality = data.get('quality')
-
     inventory = Inventory.query.filter_by(id=item_id).first()
     if inventory:
         inventory.name = new_name
