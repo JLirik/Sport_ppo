@@ -286,6 +286,32 @@ def add_purchase():
     return render_template('add_purchase.html')
 
 
+@app.route('/admin/main_add_item', methods=['GET'])
+def main_add_item():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+
+    return render_template('main_add_item.html')
+
+
+@app.route('/admin/main_add_item_to_db', methods=['POST'])
+def main_add_item_to_db():
+    data = request.get_json()
+    item_name = data['name']
+    item_quality = data['quality']
+    count = data['count']
+    for i in range(int(count)):
+        inventory = Inventory()
+        inventory.name = item_name
+        inventory.quality = item_quality
+        db.session.add(inventory)
+    db.session.commit()
+    return make_response('GOOD!')
+
+
 @app.route('/admin/create_report', methods=['GET'])
 def create_report():
     take = Take.query.all()
