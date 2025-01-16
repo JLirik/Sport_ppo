@@ -15,7 +15,7 @@ SubmitButton.addEventListener('click', async function() {
                 'provider': provider
             }),
             success: function(response) {
-                console.log(response);
+                window.location.href = "/admin/purchases";
             },
             error: function(error) {
                 console.log(error);
