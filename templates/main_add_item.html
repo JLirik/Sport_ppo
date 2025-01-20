@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>reg</title>
+    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="static/assets/css/Login-Form-Basic-icons.css">
+</head>
+
+<body>
+{% if current_user.is_authenticated %}
+    <div style="display: flex; justify-content: space-between">
+        <h5>ADMIN</h5>
+        <h5>имя - {{ current_user.name }}</h5>
+        <a href="/logout">Выйти</a>
+    </div>
+    <form action="/admin/main" method="get">
+        <button class="back-to-adm-req">Назад</button>
+    </form>
+    <div style="display: flex; justify-content: center;">
+        <div>
+            <h3>Название</h3><br>
+            <input id="name" type="text" style="width: 20%; direction: column; text-align: center;">
+        </div>
+        <div>
+            <h3>Качество</h3><br>
+            <select id="quality-select">
+                <option value="Новый">Новый</option>
+                <option value="Сломанный">Сломанный</option>
+            </select>
+
+<!--            <input id="quality" type="text" style="width: 20%; direction: column; text-align: center;">-->
+        </div>
+        <div>
+            <h3>Количество</h3><br>
+            <input id="count" type="number" min="1" style="width: 20%; direction: column; text-align: center;">
+        </div>
+        <div>
+            <button class="btn btn-success" id="success">Добавить</button>
+        </div>
+    </div>
+{% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/main_add_item.js')}}"></script>
+</body>
+
+</html>

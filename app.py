@@ -1,8 +1,13 @@
+import io
+from io import BytesIO
+
+import openpyxl
 from flask import *
 from models import *
 from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
 import pandas as pd
+from flask import send_file
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ppo_pumpkin'
@@ -128,9 +133,12 @@ def logout():
 def request_new_item():
     if current_user.is_authenticated:
         taken_ids = [subitem.inventory_id for subitem in Take.query.all()]
-        orderd_ids = [subitem.inventory_id for subitem in NewRequest.query.filter(NewRequest.user_id != current_user.id).all()]
+        orderd_ids = [subitem.inventory_id for subitem in
+                      NewRequest.query.filter(NewRequest.user_id != current_user.id).all()]
         not_taken_inventory = [[item.id, item.name, item.quality,
-                                NewRequest.query.filter(NewRequest.inventory_id == item.id).first().status if NewRequest.query.filter(NewRequest.inventory_id == item.id).first() else False] for item in
+                                NewRequest.query.filter(
+                                    NewRequest.inventory_id == item.id).first().status.lower() if NewRequest.query.filter(
+                                    NewRequest.inventory_id == item.id).first() else False] for item in
                                Inventory.query.all() if item.id not in taken_ids + orderd_ids]
         return render_template('user-requests-2.0.html', inventory=not_taken_inventory)
     else:
@@ -228,7 +236,6 @@ def update_inventory():
     item_id = data.get('item_id')
     new_name = data.get('name')
     new_quality = data.get('quality')
-
     inventory = Inventory.query.filter_by(id=item_id).first()
     if inventory:
         inventory.name = new_name
@@ -236,6 +243,21 @@ def update_inventory():
         db.session.commit()
         return jsonify(success=True, message="Данные инвентаря обновлены")
     return jsonify(success=False, message="Инвентарь не найден")
+
+
+@app.route('/admin/add_item', methods=['POST'])
+def add_item():
+    data = request.get_json()
+    item_name = data['name']
+    item_price = int(data['price'])
+    provider = data['provider']
+    adm_requests = AdminRequest()
+    adm_requests.name = item_name
+    adm_requests.price = item_price
+    adm_requests.provider = provider
+    db.session.add(adm_requests)
+    db.session.commit()
+    return make_response('GOOD!')
 
 
 @app.route('/admin/purchases', methods=['GET'])
@@ -253,22 +275,65 @@ def purchases():
     return render_template('purchases.html', requests=admin_requests)
 
 
+@app.route('/admin/add_purchase', methods=['GET'])
+def add_purchase():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+
+    return render_template('add_purchase.html')
+
+
+@app.route('/admin/main_add_item', methods=['GET'])
+def main_add_item():
+    if current_user.is_authenticated:
+        if not current_user.is_admin:
+            return redirect(url_for('user_main'))
+    else:
+        return redirect(url_for('home'))
+
+    return render_template('main_add_item.html')
+
+
+@app.route('/admin/main_add_item_to_db', methods=['POST'])
+def main_add_item_to_db():
+    data = request.get_json()
+    item_name = data['name']
+    item_quality = data['quality']
+    count = data['count']
+    for i in range(int(count)):
+        inventory = Inventory()
+        inventory.name = item_name
+        inventory.quality = item_quality
+        db.session.add(inventory)
+    db.session.commit()
+    return make_response('GOOD!')
+
+
 @app.route('/admin/create_report', methods=['GET'])
 def create_report():
     take = Take.query.all()
-    data = {'Имя клиента': [], 'Название инвентаря': [], 'Состояние инвентарая': []}
+    i = 2
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws['A1'] = 'Имя клиента'
+    ws['B1'] = 'Название инвентаря'
+    ws['C1'] = 'Состояние инвентаря'
     for item in take:
-        cname = User.query.filter(User.id == item.user_id).first().name
-        iname = Inventory.query.filter(Inventory.id == item.inventory_id).first().name
-        quality = Inventory.query.filter(Inventory.id == item.inventory_id).first().quality
-        data['Имя клиента'].append(cname)
-        data['Название инвентаря'].append(iname)
-        data['Состояние инвентарая'].append(quality)
-        df = pd.DataFrame(data)
-        df.to_excel('123.xlsx', sheet_name='Отчёт')
-        # output.headers["Content-Disposition"] = "attachment; filename=report.xlsx"
-        # output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    return None
+        ws[f'A{i}'] = User.query.filter(User.id == item.user_id).first().name
+        ws[f'B{i}'] = Inventory.query.filter(Inventory.id == item.inventory_id).first().name
+        ws[f'C{i}'] = Inventory.query.filter(Inventory.id == item.inventory_id).first().quality
+        i += 1
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    response = make_response(
+        send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                  as_attachment=True, download_name='example.xlsx'))
+    response.headers['Content-Disposition'] = 'attachment; filename=response.xlsx'
+    return response
 
 
 def create_base_db():
@@ -313,13 +378,13 @@ def create_base_db():
     db.session.add(to_db_inventory)
 
     to_db_inventory = AdminRequest(name='Гантеля 1',
-                                price='100', provider='Спортмастер')
+                                   price='100', provider='Спортмастер')
     db.session.add(to_db_inventory)
     to_db_inventory = AdminRequest(name='Гантеля 2',
-                                price='10', provider='Декатлон')
+                                   price='10', provider='Декатлон')
     db.session.add(to_db_inventory)
     to_db_inventory = AdminRequest(name='Гантеля 3',
-                                price='30', provider='DeSport')
+                                   price='30', provider='DeSport')
     db.session.add(to_db_inventory)
 
     to_db_take = Take(user_id=1,

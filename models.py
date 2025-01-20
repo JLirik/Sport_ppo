@@ -33,7 +33,7 @@ class AdminRequest(db.Model):
     __tablename__ = 'admin_requests'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    price = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
     provider = db.Column(db.String(50), nullable=False)
 
 
