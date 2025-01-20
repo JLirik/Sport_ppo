@@ -28,11 +28,16 @@
         </div>
         <div>
             <h3>Качество</h3><br>
-            <input id="quality" type="text" style="width: 20%; direction: column; text-align: center;">
+            <select id="quality-select">
+                <option value="Новый">Новый</option>
+                <option value="Сломанный">Сломанный</option>
+            </select>
+
+<!--            <input id="quality" type="text" style="width: 20%; direction: column; text-align: center;">-->
         </div>
         <div>
             <h3>Количество</h3><br>
-            <input id="count" type="text" style="width: 20%; direction: column; text-align: center;">
+            <input id="count" type="number" min="1" style="width: 20%; direction: column; text-align: center;">
         </div>
         <div>
             <button class="btn btn-success" id="success">Добавить</button>

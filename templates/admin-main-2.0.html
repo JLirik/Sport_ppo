@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/assets/css/Navbar-Right-Links-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{url_for('static', filename='/scripts/admin_update_inventory.js')}}"></script>
+    <script src="{{url_for('static', filename='/scripts/admin_delete_item.js')}}"></script>
 </head>
 
 <body style="background: rgb(255,247,235);">
@@ -60,7 +61,8 @@
                                             <option value="Сломанный" {% if item[2] == "Сломанный" %}selected{% endif %}>Сломанный</option>
                                         </optgroup>
                                     </select></td>
-                                <td style="border-right: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);width: 20%;"><button class="btn btn-success" onclick="updateInventory({{ item[0] }})" style="background: rgb(116,151,160);">Сохранить</button></td>
+                                <td style="border-right: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);width: 20%;"><button class="btn btn-success" onclick="updateInventory({{ item[0] }})" style="background: rgb(116,151,160);">Сохранить</button>
+                                    <button name="item_id" value="{{ item[0] }}" class="btn btn-success" type="submit" style="background: rgb(116,151,160);">Удалить предмет</button></td>
                             </tr>
                         {% endfor %}
                         </tbody>
