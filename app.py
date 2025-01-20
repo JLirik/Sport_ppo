@@ -5,6 +5,7 @@ from models import *
 from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
 from flask import send_file
+from sqlalchemy import delete
 
 
 app = Flask(__name__)
@@ -334,6 +335,16 @@ def create_report():
                   as_attachment=True, download_name='example.xlsx'))
     response.headers['Content-Disposition'] = 'attachment; filename=response.xlsx'
     return response
+
+
+@app.route('/admin/delete_item', methods=['POST'])
+def admin_delete_item():
+    data = request.get_json()
+    item_id = data['item_id']
+    print(item_id)
+    Inventory.query.filter(Inventory.id==item_id).delete()
+    db.session.commit()
+    return make_response('GOOD!')
 
 
 def create_base_db():

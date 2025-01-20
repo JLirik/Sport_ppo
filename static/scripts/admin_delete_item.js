@@ -1,18 +1,14 @@
-console.log(1)
 function deleteItem(itemId) {
     $.ajax({
-        url: '/admin/deleteItem',
+        url: '/admin/delete_item',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            item_id: itemId
+            item_id: itemId,
         }),
         success: function (response) {
-            if (response.success) {
-                console.log(response.message);
-            } else {
-                console.log("Ошибка: " + response.message);
-            }
+            console.log(response.message);
+            window.location.href = "/admin/main";
         },
         error: function (xhr, status, error) {
             console.log("Произошла ошибка при обновлении данных.");
