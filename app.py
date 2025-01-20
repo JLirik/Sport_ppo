@@ -1,13 +1,11 @@
 import io
-from io import BytesIO
-
 import openpyxl
 from flask import *
 from models import *
 from datetime import timedelta
 from flask_login import LoginManager, login_user, logout_user, current_user
-import pandas as pd
 from flask import send_file
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ppo_pumpkin'
@@ -16,9 +14,11 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 db.init_app(app)
 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 
 with app.app_context():
     db.create_all()
