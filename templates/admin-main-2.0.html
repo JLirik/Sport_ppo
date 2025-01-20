@@ -62,7 +62,7 @@
                                         </optgroup>
                                     </select></td>
                                 <td style="border-right: 3px solid rgb(116,151,160);border-bottom: 3px solid rgb(116,151,160);border-top: 3px solid rgb(116,151,160);width: 20%;"><button class="btn btn-success" onclick="updateInventory({{ item[0] }})" style="background: rgb(116,151,160);">Сохранить</button>
-                                    <form method="post" action="{{ url_for('delete_item') }}"><button name="item_id" value="{{ item[0] }}" class="btn btn-success" type="submit" style="background: rgb(116,151,160);">Удалить предмет</button></form></td>
+                                    <button name="item_id" value="{{ item[0] }}" class="btn btn-success" type="submit" style="background: rgb(116,151,160);">Удалить предмет</button></td>
                             </tr>
                         {% endfor %}
                         </tbody>
