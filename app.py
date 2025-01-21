@@ -273,7 +273,7 @@ def purchases():
     admin_requests = []
     for item in taken_item:
         admin_requests.append((item.id, item.name, item.price, item.provider))
-    return render_template('purchases.html', requests=admin_requests)
+    return render_template('purchases-2.0.html', requests=admin_requests)
 
 
 @app.route('/admin/add_purchase', methods=['GET'])
@@ -284,7 +284,7 @@ def add_purchase():
     else:
         return redirect(url_for('home'))
 
-    return render_template('add_purchase.html')
+    return render_template('add-purchase-2.0.html')
 
 
 @app.route('/admin/main_add_item', methods=['GET'])
