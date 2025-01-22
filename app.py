@@ -193,7 +193,7 @@ def check_requests():
     for ask in taken_item2:
         user_requests.append((ask.id, User.query.filter(User.id == ask.user_id).first().name,
                               Inventory.query.filter(Inventory.id == ask.inventory_id).first().name, ask.quality, 1))
-    return render_template('check_requests.html', user_requests=user_requests)
+    return render_template('check-requests-2.0.html', user_requests=user_requests)
 
 
 @app.route('/admin/update_request_status', methods=['POST'])
