@@ -295,7 +295,7 @@ def main_add_item():
     else:
         return redirect(url_for('home'))
 
-    return render_template('main_add_item.html')
+    return render_template('main-add-item-2.0.html')
 
 
 @app.route('/admin/main_add_item_to_db', methods=['POST'])
