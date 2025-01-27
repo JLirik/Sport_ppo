@@ -7,7 +7,7 @@ button.addEventListener('click', function () {
                     const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
-                    a.download = 'example.xlsx';
+                    a.download = 'data.xlsx';
                     a.click();
                     window.URL.revokeObjectURL(url);
                 })
