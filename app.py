@@ -102,8 +102,7 @@ def user_main():
         product = Inventory.query.filter_by(id=item.inventory_id).first()
         fixes = FixRequest.query.filter_by(user_id=current_user.id, inventory_id=item.inventory_id).first()
         status = False
-        if fixes:
-            status = fixes.status
+        if fixes:            status = fixes.status
         user_inventory.append((product.id, product.name, product.quality, status))
     return render_template('user-main-2.0.html', inventory=user_inventory)
 
@@ -332,7 +331,7 @@ def create_report():
     output.seek(0)
     response = make_response(
         send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                  as_attachment=True, download_name='example.xlsx'))
+                  as_attachment=True, download_name='data.xlsx'))
     response.headers['Content-Disposition'] = 'attachment; filename=response.xlsx'
     return response
 
@@ -341,8 +340,8 @@ def create_report():
 def admin_delete_item():
     data = request.get_json()
     item_id = data['item_id']
-    print(item_id)
     Inventory.query.filter(Inventory.id==item_id).delete()
+    Take.query.filter(Take.inventory_id==item_id).delete()
     db.session.commit()
     return make_response('GOOD!')
 
