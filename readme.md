@@ -1,7 +1,6 @@
 # Спорт
 
 ![Project Status](https://img.shields.io/badge/status-active-brightgreen) 
-![License](https://img.shields.io/badge/license-MIT-blue)
 
 Веб-приложение для автоматизации учета спортивного инвентаря в школе.  
 **Цель**: Упростить управление инвентарем, распределение между пользователями и планирование закупок.
