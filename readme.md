@@ -50,3 +50,8 @@
 2) Установить requirements:
    pip install -r requirements.txt
 3) Запустить проект с помощью app.py
+
+
+## 🎞 Ссылка на видео
+
+https://rutube.ru/video/private/37d853af8d17da84219491da28392dd0/?p=UKvcKUgqg03X6ZelgNSrZg
